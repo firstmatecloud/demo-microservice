@@ -1,5 +1,7 @@
 import exampleRepo from "../repos/exampleRepo.js"
 import axios from "axios"
+import appConfig from "../config/appConfig.js";
+
 
 const api = axios.create({
     baseURL: appConfig.aiServiceUrl(),
