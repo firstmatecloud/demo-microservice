@@ -1,0 +1,11 @@
+{{ if index .Values "configmap" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name }}-configmap
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+data:
+{{ toYaml .Values.configmap.data | indent 1 }}
+
+{{ end }}

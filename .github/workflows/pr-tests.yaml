@@ -1,0 +1,51 @@
+name: Validation pipeline on every pull request
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+env:
+  NODE_VERSION: '18.x' # set this to the node version to use (supports 8.x, 10.x, 12.x)
+  APP_NAME: ms-nodejs
+  HELM_EXPERIMENTAL_OCI: 1
+
+jobs:
+  nodejs:
+    runs-on: ubuntu-latest
+    name: Validate nodejs code
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: true
+      - uses: actions/setup-node@v2.2.0
+        with:
+          node-version: '20'
+      - name: Install pnpm
+        run: npm -g install pnpm
+      - name: Install packages
+        run: pnpm install
+      - name: lint check
+        run: pnpm lint
+      - name: Unit tests
+        run: pnpm test
+  docker:
+    runs-on: ubuntu-latest
+    name: Validate docker
+    steps:
+      - name: Setup Docker buildx
+        uses: docker/setup-buildx-action@v1.6.0
+        with:
+          driver: docker
+      - name: docker build
+        run: docker build . -t "test-docker"
+  helm:
+    runs-on: ubuntu-latest
+    name: Validate helm
+    steps:
+      - name: helm lint
+        run: helm lint ./charts
+      - name: helm template
+        run: helm template test ./charts
+

@@ -1,0 +1,96 @@
+name: Build and deploy Node.js docker image - ms nodejs
+on:
+  push:
+    branches:
+      - main
+env:
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
+  NODE_VERSION: '18.x' # set this to the node version to use (supports 8.x, 10.x, 12.x)
+  APP_NAME: ms-nodejs
+  REPO_NAME: example
+  HELM_EXPERIMENTAL_OCI: 1
+  ENVIRONMENT_REPOSITORY_DEV: chart-env-dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build Job
+    outputs:
+      tag: ${{ steps.bump_version.outputs.new_tag }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: true
+      - name: Bump version and set tag
+        id: bump_version
+        run: |
+          LATEST_TAG=$( git describe --tags --abbrev=0 )
+          wget -O semver  https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
+          chmod +x ./semver
+          VERSION=$( ./semver bump patch $( git describe --tags --abbrev=0 ) )
+          git tag $VERSION
+          echo "LATEST_TAG=$(echo $LATEST_TAG)" >> $GITHUB_ENV
+          echo "VERSION=$(echo $VERSION)" >> $GITHUB_ENV
+          echo "::set-output name=new_tag::$(echo $VERSION)"
+      - uses: actions/setup-node@v2.2.0
+        with:
+          node-version: '20'
+      - name: Install pnpm
+        run: npm -g install pnpm
+      - name: Install packages
+        run: pnpm install
+      - name: linter tests
+        run: pnpm lint
+      - name: Unit tests
+        run: pnpm test
+      - name: Setup Docker buildx
+        uses: docker/setup-buildx-action@v1.6.0
+        with:
+          driver: docker
+      - name: docker build
+        run: docker build . -t "${{ env.REPO_NAME }}/${{ env.APP_NAME }}:${{ steps.bump_version.outputs.new_tag }}"
+      - name: docker push
+        run: |
+          docker login -u ${{ env.REPO_NAME }} -p ${{ secrets.DOCKER_HUB_TOKEN }}
+#          Disabled for example repo
+#          docker push ${{ env.REPO_NAME }}/${{ env.APP_NAME }}:${{ env.VERSION }}
+      - run: |
+          sed -i -e "s/version:.*/version:  ${{ steps.bump_version.outputs.new_tag }}/" ./charts/Chart.yaml
+      - run: |
+          sed -i -e "s/version:.*/version:  ${{ steps.bump_version.outputs.new_tag }}/" ./charts/values.yaml
+      - name: helm package and push
+        run: |
+          helm package ./charts
+          helm push ${{ env.APP_NAME }}-helm-${{ steps.bump_version.outputs.new_tag }}.tgz  oci://registry-1.docker.io/${{ env.REPO_NAME }}
+      - name: push tag
+        run: git push --tag
+  deploy_to_dev:
+    name: deploy to dev
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: ${{ github.repository_owner }}/${{ env.ENVIRONMENT_REPOSITORY_DEV }}
+          ref: main
+          path: environment
+          token: ${{ secrets.SYSTEM_PAT }}
+      - run: |
+          wget -q https://github.com/mikefarah/yq/releases/download/v4.9.8/yq_linux_amd64
+          chmod +x yq_linux_amd64
+      - name: bump version
+        run: |
+          ./yq_linux_amd64 eval '(.dependencies[]|select(.name == "${{ env.APP_NAME }}-helm").version) |= "${{ needs.build.outputs.tag }}"' \
+            --inplace environment/charts/Chart.yaml
+      - uses: peter-evans/create-pull-request@v3.10.0
+        with:
+          path: environment
+          branch: promote-${{ env.APP_NAME }}-${{ needs.build.outputs.tag }}
+          commit-message: |
+            chore: Promote ${{ env.APP_NAME }} to ${{ needs.build.outputs.tag }}
+          body: |
+            chore: Promote ${{ env.APP_NAME }} to ${{ needs.build.outputs.tag }}
+          token: ${{ secrets.SYSTEM_PAT }}
+          title: |
+            chore: ${{ env.APP_NAME }} to ${{ needs.build.outputs.tag }}

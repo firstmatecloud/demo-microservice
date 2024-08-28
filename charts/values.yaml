@@ -1,0 +1,43 @@
+version: 0.0.4
+replicaCount: 1
+serviceAccountName: ms-nodejs
+resources:
+  limits:
+    cpu: 100m
+    memory: 200Mi
+  requests:
+    cpu: 50m
+    memory: 100Mi
+image:
+  repository: example/ms-nodejs
+  pullPolicy: IfNotPresent
+
+livenessProbe:
+  probePath: /health
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 1
+  failureThreshold: 3
+readinessProbe:
+  probePath: /health
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 1
+  failureThreshold: 3
+terminationGracePeriodSeconds: 10
+
+secrets:
+  EXAMPLE_SECRET:
+    secretName: exampleSecret
+    secretKey: exampleKey
+
+configmap:
+  data:
+    EXAMPLE_CONFIG: "example config"
+
+service:
+  type: ClusterIP
+  externalPort: 80
+  internalPort: 8080

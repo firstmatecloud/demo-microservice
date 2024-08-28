@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    app: {{ .Chart.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+{{- if index .Values "configmap" }}
+      annotations:
+        checksum/config: {{ .Values.configmap.data | toJson | sha256sum}}
+{{ end }}
+    spec:
+{{ if index .Values "image" "imagePullSecret" }}
+      imagePullSecrets:
+        - name: {{ .Values.image.imagePullSecret }}
+{{ end }}
+{{ if index .Values "tolerations" }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 12 }}
+{{ end }}
+      serviceAccountName: {{ .Values.serviceAccountName }}
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.version }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.service.internalPort }}
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.livenessProbe.probePath }}
+            port: {{ .Values.service.internalPort }}
+          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+          successThreshold: {{ .Values.livenessProbe.successThreshold }}
+          timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+          failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.readinessProbe.probePath }}
+            port: {{ .Values.service.internalPort }}
+          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+          successThreshold: {{ .Values.readinessProbe.successThreshold }}
+          timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+          failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+{{- if index .Values "configmap" }}
+        envFrom:
+          - configMapRef:
+              name: {{ .Chart.Name }}-configmap
+{{ end -}}
+{{- if index .Values "secrets" }}
+        env:
+{{- range $secretName, $secret := .Values.secrets }}
+          - name: {{ $secretName }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ $secret.secretName }}
+                key: {{ $secret.secretKey }}
+{{ end }}
+{{ end }}
+        resources:
+{{ toYaml .Values.resources | indent 12 }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
