@@ -16,9 +16,12 @@ jobs:
     name: Validate nodejs code
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: true
       - uses: actions/setup-node@v2.2.0
         with:
-          node-version: '20'
+          node-version: '18.x'
       - name: Install pnpm
         run: npm -g install pnpm
       - name: Install packages
@@ -47,4 +50,12 @@ jobs:
         run: helm lint ./charts
       - name: helm template
         run: helm template test ./charts
-
+  postman:
+    runs-on: ubuntu-latest
+    name: Run Postman tests
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install newman
+        run: npm install -g newman
+      - name: Run Postman tests
+        run: newman run postman/ms_nodejs.postman_collection.json
