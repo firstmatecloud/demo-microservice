@@ -5,5 +5,7 @@ WORKDIR /usr/src/app
 
 RUN apk add --no-cache git
 COPY . .
+
+
 EXPOSE 8080
-CMD ["npm", "start", "--no-update-notifier"]
+CMD ["npm", "start"]
