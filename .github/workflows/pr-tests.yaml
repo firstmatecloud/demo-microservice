@@ -16,9 +16,6 @@ jobs:
     name: Validate nodejs code
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          submodules: true
       - uses: actions/setup-node@v2.2.0
         with:
           node-version: '20'
@@ -34,6 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Validate docker
     steps:
+      - uses: actions/checkout@v3
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@v1.6.0
         with:
@@ -44,6 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Validate helm
     steps:
+      - uses: actions/checkout@v3
       - name: helm lint
         run: helm lint ./charts
       - name: helm template
