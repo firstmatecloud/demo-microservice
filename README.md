@@ -9,6 +9,7 @@ Welcome to **DEVOPS 2.0**
 By integrating directly with your repository’s workflow, FirstMate ensures that every pull request adheres to your organization’s predefined guidelines and practices. 
 Whether you’re working with a small team or a large-scale enterprise, FirstMate helps maintain code quality and consistency across all your projects.
 
+
 ### Key Features
 
 - **Automated Code Review**: Automatically checks every pull request for compliance with your standards.
