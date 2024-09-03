@@ -14,19 +14,24 @@ Whether you’re working with a small team or a large-scale enterprise, FirstMat
 - **Automated Code Review**: Automatically checks every pull request for compliance with your standards.
 - **Customizable Rules**: Tailor the rules and guidelines to match your organization's specific needs.
 - **Comprehensive Reporting**: Provides detailed reports on guideline adherence and potential improvements.
+- **Improve Legacy Code**: If needed, we can create pull requests to propose improvements on projects that are not adhering to the guidelines. **Automated repetitive tasks**: FirstMate helps you to update small changes like pipeline versions in all repo's by creating PRs
 - **Seamless Integration**: Works with your existing Git workflows and tools, including GitHub, Azure Devops, Bitbucket, and more.
+
+### Upcoming features:
+- **Pipeline debugging**: Developers get automated help to fix pipeline crashes.
+- **Pipeline debugging**: Developers get automated help to fix pipeline crashes.
 
 ## Getting Started
 
 To get started with the demo, follow these steps:
 
-1. **Investigate guidelines**: The guidelines repository that is used to validate pull requests, can be found [here](https://github.com/firstmatecloud/guidelines-repo)
+1. **Investigate guidelines**: The guidelines repository that is used to validate pull requests on this demo repo, can be found [here](https://github.com/firstmatecloud/guidelines-repo). If you want to test with your own guidelines, contact us.
 
 2. **Validate open pull requests**: Have a look at the [open pull requests](https://github.com/firstmatecloud/demo-microservice/pulls) in this demo repo
 
-3. **Create a new pull request**:  Make changes to the codebase and create a pull request and enjoy your first Review by FirstMate
+3. **Create a new pull request**:  Make changes to the codebase, create a pull request and enjoy your first Review by FirstMate
 
-4. **Get started on your environment**: Have a look on our [website](https://firstmate.cloud) to onboard FirstMate in your organisation on Bitbucket, Azure Devops or Github.
+4. **Get started in your environment**: Have a look on our [website](https://firstmate.cloud) to onboard FirstMate in your organisation on Bitbucket, Azure Devops or Github.
 
 ## Documentation
 
