@@ -3,7 +3,8 @@ import exampleRepo from "../repos/exampleRepo.js"
 export class ExampleService {
 
     async getById(id) {
-        return await exampleRepo.getById(id)
+        const result = await exampleRepo.getById(id)
+        return result.success
     }
 
 
