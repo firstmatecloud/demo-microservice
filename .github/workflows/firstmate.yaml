@@ -1,4 +1,4 @@
-name: Validation pipeline on every pull request
+name: QA Pipeline
 on:
   pull_request:
     types:
@@ -7,13 +7,12 @@ on:
       - synchronize
 env:
   NODE_VERSION: '18.x' # set this to the node version to use (supports 8.x, 10.x, 12.x)
-  APP_NAME: ms-nodejs
   HELM_EXPERIMENTAL_OCI: 1
 
 jobs:
   nodejs:
     runs-on: ubuntu-latest
-    name: Validate nodejs code
+    name: Validate nodejs
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v2.2.0
@@ -23,9 +22,9 @@ jobs:
         run: npm -g install pnpm
       - name: Install packages
         run: pnpm install
-      - name: lint check
+      - name: Install packages
         run: pnpm lint
-      - name: Unit tests
+      - name: Install packages
         run: pnpm test
   docker:
     runs-on: ubuntu-latest
@@ -47,4 +46,3 @@ jobs:
         run: helm lint ./charts
       - name: helm template
         run: helm template test ./charts
-

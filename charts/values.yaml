@@ -1,6 +1,6 @@
 version: 0.0.4
 replicaCount: 1
-serviceAccountName: ms-nodejs
+serviceAccountName: demo-ms
 resources:
   limits:
     cpu: 100m
@@ -9,7 +9,7 @@ resources:
     cpu: 50m
     memory: 100Mi
 image:
-  repository: example/ms-nodejs
+  repository: example/demo-ms
   pullPolicy: IfNotPresent
 
 livenessProbe:
