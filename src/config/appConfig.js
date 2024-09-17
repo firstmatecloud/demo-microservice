@@ -9,6 +9,9 @@ class Configuration {
     logPretty(){
         return process.env.LOG_PRETTY === "true";
     }
+    exampleConfig(){
+        return process.env.EXAMPLE_CONFIG;
+    }
 }
 
 export default new Configuration()
