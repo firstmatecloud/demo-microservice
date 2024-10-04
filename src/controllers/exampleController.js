@@ -11,6 +11,13 @@ class ExampleController {
             next(err);
         }
     }
+    async publicApi(req, res, next) {
+        try {
+            return res.send("success");
+        } catch (err) {
+            next(err);
+        }
+    }
 
 }
 
