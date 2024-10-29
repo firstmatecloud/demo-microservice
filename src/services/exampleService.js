@@ -3,7 +3,11 @@ import exampleRepo from "../repos/exampleRepo.js"
 export class ExampleService {
 
     async getById(id) {
-        return await exampleRepo.getById(id)
+        const example = await exampleRepo.getById(id)
+        if(!example){
+            throw new Error(`Example with ${id} does not exist`)
+        }
+        return example;
     }
 
 
