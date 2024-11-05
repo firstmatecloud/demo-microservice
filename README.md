@@ -1,6 +1,6 @@
 # 👋 Hello and Welcome to the FirstMate Demo Repository!
 
-We’re excited to have you here! This repository gives you a hands-on experience with **FirstMate**, showcasing how it can help your team enforce coding standards, improve code quality, and streamline pull request reviews.
+We’re excited to have you here! This repository gives you a hands-on experience with **FirstMate**, showcasing how it can help your team enforce coding standards, improve code quality & security, and streamline pull request reviews.
 
 ## About FirstMate
 
@@ -14,12 +14,14 @@ We’re excited to have you here! This repository gives you a hands-on experienc
 
 ### Upcoming Feature
 - **Auto-Generated Guidelines**: Soon, FirstMate will be able to auto-generate a custom guidelines repository for you by analyzing your git history. By reviewing patterns in previous pull requests, FirstMate will identify frequent issues and create tailored guidelines, saving your team time and ensuring a smooth setup.
+- **Feedback Based on Open Source Tools**: Soon, FirstMate will use statis analyzers like Checkov to give you even more valuable insights.
+- **Documentation Drift**: Soon, FirstMate will detect when important files are changed, to remind you to update the docs.
 
 ## Getting Started with the Demo
 
 This demo repository is designed to show FirstMate in action. Follow these steps to explore its capabilities:
 
-1. **🔍 Check Out Existing Pull Requests**: To see examples of FirstMate’s feedback, take a look at the [open pull requests](https://github.com/firstmatecloud/demo-microservice/pulls) in this demo repository. This will give you a sense of the kinds of insights and recommendations FirstMate provides.
+1. **🔍 Check Out Existing Pull Requests**: To see examples of FirstMate’s feedback, take a look at the [open pull requests](https://github.com/firstmatecloud/demo-microservice/pulls) in this demo repository. This will give you a sense of the kinds of insights and recommendations FirstMate provides. This repo is linked to our [guidelines repository](https://github.com/firstmatecloud/guidelines-repo), so FirstMate is checking these rules to give feedback.
 
 2. **📝 Create a Pull Request**: Make a change to the code in this demo repository and open a new pull request. FirstMate will automatically review your code and provide feedback directly within the PR based on predefined guidelines.
 
