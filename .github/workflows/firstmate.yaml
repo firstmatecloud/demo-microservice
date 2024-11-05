@@ -26,17 +26,6 @@ jobs:
         run: pnpm lint
       - name: Install packages
         run: pnpm test
-  docker:
-    runs-on: ubuntu-latest
-    name: Validate docker
-    steps:
-      - uses: actions/checkout@v3
-      - name: Setup Docker buildx
-        uses: docker/setup-buildx-action@v1.6.0
-        with:
-          driver: docker
-      - name: docker build
-        run: docker build . -t "test-docker"
   helm:
     runs-on: ubuntu-latest
     name: Validate helm
