@@ -7,6 +7,10 @@ export class ExampleService {
         return await exampleRepo.getById(id)
     }
 
+    async getExcetutedDocuments(id) {
+        return await exampleRepo.getById(id)
+    }
+
     async getUserData(id) {
         const user = await exampleRepo.getById(id);
         logger.info(user.data);
