@@ -10,7 +10,7 @@ We’re excited to have you here! This repository gives you a hands-on experienc
 
 - **🚀 Automated Code Review**: FirstMate reviews every pull request against your organization’s standards, highlighting any inconsistencies or areas for improvement.
 - **🔧 Pipeline Feedback**: Detects and provides feedback on issues that may impact pipeline stability, helping developers address potential failures before they occur.
-- **⚙️ Customizable Guidelines**: Tailor FirstMate to enforce your unique code quality and style guidelines, ensuring consistency across projects. FirstMate also includes a set of default guidelines that come out of the box—learn more in our [documentation](https://firstmate.cloud/docs).
+- **⚙️ Customizable Guidelines**: Tailor FirstMate to enforce your unique code quality and style guidelines, ensuring consistency across projects. FirstMate also includes a set of default guidelines that come out of the box—learn more in our [documentation]((https://docs.firstmate.io/)).
 
 ### Upcoming Feature
 - **Auto-Generated Guidelines**: Soon, FirstMate will be able to auto-generate a custom guidelines repository for you by analyzing your git history. By reviewing patterns in previous pull requests, FirstMate will identify frequent issues and create tailored guidelines, saving your team time and ensuring a smooth setup.
@@ -35,7 +35,7 @@ If you have any questions, feedback, or just want to chat with us about FirstMat
 
 ## Documentation
 
-For more detailed instructions on installing, configuring, and using FirstMate, please visit our [documentation website](https://docs.firstmate.cloud).
+For more detailed instructions on installing, configuring, and using FirstMate, please visit our [documentation website]((https://docs.firstmate.io/)).
 
 ## License
 
