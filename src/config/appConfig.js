@@ -1,7 +1,7 @@
 class Configuration {
 
     serverPort() {
-        return process.env.PORT || 8080;
+        return process.env.PORT || 80;
     }
     logLevel(){
         return process.env.LOG_LEVEL || "info";
