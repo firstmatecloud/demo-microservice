@@ -9,4 +9,6 @@ const router = express.Router();
 router.route("/:id")
     .get(grantAccessByPermissionMiddleware([API_PERMISSIONS.PUBLIC_ENDPOINT]), exampleController.getById)
 
+router.route("/user-data/:id").get( exampleController.getById)
+
 export default router;
